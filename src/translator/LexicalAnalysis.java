@@ -79,17 +79,17 @@ public class LexicalAnalysis {
 	
 	private void initTables () {
 		//Init operation table
-		operationTable.put(1, "+");
-		operationTable.put(2, "-");
-		operationTable.put(3, "*");
-		operationTable.put(4, "/");
-		operationTable.put(5, "^");
-		operationTable.put(6, "=");
-		operationTable.put(7, "<");
-		operationTable.put(8, ">");
-		operationTable.put(9, "<>");
-		operationTable.put(10, "<=");
-		operationTable.put(11, ">=");
+		operationTable.put(0, "+");
+		operationTable.put(1, "-");
+		operationTable.put(2, "*");
+		operationTable.put(3, "/");
+		operationTable.put(4, "^");
+		operationTable.put(5, "=");
+		operationTable.put(6, "<");
+		operationTable.put(7, ">");
+		operationTable.put(8, "<>");
+		operationTable.put(9, "<=");
+		operationTable.put(10, ">=");
 		
 		//Init separator table
 	}
