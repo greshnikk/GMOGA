@@ -3,7 +3,10 @@
  */
 package translator;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
+
 import core.Main;
 
 /**
@@ -11,32 +14,42 @@ import core.Main;
  *
  */
 public class LexicalAnalysis {
-	private Hashtable<Integer, Character> operationTable = new Hashtable<Integer, Character>();
-	private Hashtable<Integer, Character> separatorTable = new Hashtable<Integer, Character>();
-	private Hashtable<Integer, Integer> constantTable = new Hashtable<Integer, Integer>();
+	private HashTableExt<Integer, String> operationTable = new HashTableExt<Integer, String>();
+	private HashTableExt<Integer, Character> separatorTable = new HashTableExt<Integer, Character>();
+	private HashTableExt<Integer, Integer> constantTable = new HashTableExt<Integer, Integer>();
 	
-	public void LexicalAnalysis() {
+	public LexicalAnalysis() {
+		initTables();
 	}
 	
 	public String convert (String input) {
 		String result = "";
+		String temp = "";
 		int tmp = 0;
-		int digit = 0;
 		
 		for (int i = 0; i < input.length(); ++i) {
-			if (Character.isDigit(input.charAt(i))) {
-				tmp = tmp * 10 + Character.getNumericValue(input.charAt(i));				
-				if (i + 1 != input.length()) {
-					continue;
+			//TODO: Add float recognition
+			char inputChar = input.charAt(i);
+			if (Character.isDigit(inputChar)) {
+				tmp = tmp * 10 + Character.getNumericValue(inputChar);
+				if (i + 1 == input.length() || !Character.isDigit(input.charAt(i + 1))) {
+					result += "N" + constantTable.size();
+					constantTable.put(constantTable.size(), tmp);
+					tmp = 0;
 				}
+				continue;
 			}
-			if (tmp != 0 || digit != 0) {
-				result += "N" + constantTable.size();
-				constantTable.put(constantTable.size(), tmp);
-				tmp = 0;
-				digit = 0;
-			}				
+			if (isOperation(inputChar)) {
+				temp += inputChar;
+				if (i + 1 == input.length() || !isOperation(input.charAt(i + 1))) {
+					Main.log(temp);
+					result += "O" + operationTable.searchKey(temp);
+					temp = "";
+				}
+				continue;
+			}
 		}
+		
 		Main.log("Converted string is");
 		Main.log(result);
 		return result;
@@ -45,17 +58,39 @@ public class LexicalAnalysis {
 	public void printTables () {
 		Main.log("\nPrinting operation table");
 		for (int i = 0; i < operationTable.size(); ++i) {
-			Main.log(constantTable.get(i));
+			Main.log(operationTable.get(i));
 		}
 		
 		Main.log("\nPrinting separator table");
 		for (int i = 0; i < separatorTable.size(); ++i) {
-			Main.log(constantTable.get(i));
+			Main.log(separatorTable.get(i));
 		}
 			
 		Main.log("\nPrinting constant table");
 		for (int i = 0; i < constantTable.size(); ++i) {
 			Main.log(constantTable.get(i));
 		}
+	}
+	
+	private boolean isOperation (char input) {
+		return (input == '+' || input == '-' || input == '*' || input == '/' || input == '^'
+				 || input == '<' || input == '>' || input == '=');				 
+	}
+	
+	private void initTables () {
+		//Init operation table
+		operationTable.put(1, "+");
+		operationTable.put(2, "-");
+		operationTable.put(3, "*");
+		operationTable.put(4, "/");
+		operationTable.put(5, "^");
+		operationTable.put(6, "=");
+		operationTable.put(7, "<");
+		operationTable.put(8, ">");
+		operationTable.put(9, "<>");
+		operationTable.put(10, "<=");
+		operationTable.put(11, ">=");
+		
+		//Init separator table
 	}
 }

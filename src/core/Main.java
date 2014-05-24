@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		LexicalAnalysis test = new LexicalAnalysis();
-		String a = test.convert("123;221;11");
+		String a = test.convert("123;221;11^31<>qwe<=");
 		test.printTables();
 	}
 	
