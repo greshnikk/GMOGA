@@ -4,12 +4,12 @@
 package translator;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 /**
  * @author Greshnikk
- *
+ * @version 0.01
+ * @since 2014-05-24
  */
 public class LexicalAnalysisTest {
 

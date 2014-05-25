@@ -1,7 +1,15 @@
+/**
+ * 
+ */
 package core;
 
 import translator.LexicalAnalysis;
 
+/**
+ * @author Greshnikk
+ * @version 0.01
+ * @since 2014-05-24
+ */
 public class Main {
 	private static boolean debug = true;
 
