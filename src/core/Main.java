@@ -15,7 +15,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		LexicalAnalysis test = new LexicalAnalysis();
 	}
 	
 	public static void log (Object input) {

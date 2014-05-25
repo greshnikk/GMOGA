@@ -14,6 +14,7 @@ public class LexicalAnalysis {
 	private HashTableExt<Integer, String> operationTable = new HashTableExt<Integer, String>();
 	private HashTableExt<Integer, Character> separatorTable = new HashTableExt<Integer, Character>();
 	private HashTableExt<Integer, Integer> constantTable = new HashTableExt<Integer, Integer>();
+	private HashTableExt<Integer, String> keywordTable = new HashTableExt<Integer, String>();
 	
 	public LexicalAnalysis() {
 		initTables();
@@ -36,18 +37,38 @@ public class LexicalAnalysis {
 				if (i + 1 == input.length() || !Character.isDigit(input.charAt(i + 1))) {
 					result += "N" + constantTable.size();
 					constantTable.put(constantTable.size(), tmp);
+					Main.log("Added number: " + tmp);
 					tmp = 0;
 				}
 				continue;
 			}
+			
 			if (isOperation(inputChar)) {
 				temp += inputChar;
 				if (i + 1 == input.length() || !isOperation(input.charAt(i + 1))) {
-					Main.log(temp);
 					result += "O" + operationTable.searchKey(temp);
+					Main.log("Added operation: " + temp);
 					temp = "";
 				}
 				continue;
+			}
+			
+			if (isSeparator(inputChar)) {
+				result += "S" + separatorTable.searchKey(inputChar);
+				Main.log("Added separator: " + inputChar);
+				continue;
+			}
+			
+			if (Character.isLetter(inputChar)) {
+				temp += inputChar;
+				if (i + 1 == input.length() || !Character.isLetter(input.charAt(i + 1))) {
+					Integer key = keywordTable.searchKey(temp);								
+					if (key != null) {
+						result += "K" + keywordTable.searchKey(temp);
+						Main.log("Added keyword: " + temp);						
+					}
+					temp = "";
+				}
 			}
 		}
 		
@@ -74,24 +95,41 @@ public class LexicalAnalysis {
 	}
 	
 	private boolean isOperation (char input) {
-		return (input == '+' || input == '-' || input == '*' || input == '/' || input == '^'
-				 || input == '<' || input == '>' || input == '=');				 
+		return (operationTable.containsValue(Character.toString(input)));		 
+	}
+	
+	private boolean isSeparator (char input) {
+		return (separatorTable.containsValue(input));
 	}
 	
 	private void initTables () {
+		int i = 0;
+		
 		//Init operation table
-		operationTable.put(0, "+");
-		operationTable.put(1, "-");
-		operationTable.put(2, "*");
-		operationTable.put(3, "/");
-		operationTable.put(4, "^");
-		operationTable.put(5, "=");
-		operationTable.put(6, "<");
-		operationTable.put(7, ">");
-		operationTable.put(8, "<>");
-		operationTable.put(9, "<=");
-		operationTable.put(10, ">=");
+		operationTable.put(i++, "+");
+		operationTable.put(i++, "-");
+		operationTable.put(i++, "*");
+		operationTable.put(i++, "/");
+		operationTable.put(i++, "^");
+		operationTable.put(i++, "=");
+		operationTable.put(i++, "<");
+		operationTable.put(i++, ">");
+		operationTable.put(i++, "<>");
+		operationTable.put(i++, "<=");
+		operationTable.put(i++, ">=");
 		
 		//Init separator table
+		i = 0;
+		separatorTable.put(i++, 'E');
+		separatorTable.put(i++, 'X');
+		separatorTable.put(i++, '.');
+		separatorTable.put(i++, '(');
+		separatorTable.put(i++, ')');
+		separatorTable.put(i++, '|');
+		separatorTable.put(i++, ' ');
+		
+		i = 0;
+		keywordTable.put(i++, "PI");
+		keywordTable.put(i++, "e");
 	}
 }
