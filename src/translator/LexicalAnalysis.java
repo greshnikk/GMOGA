@@ -3,10 +3,6 @@
  */
 package translator;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-
 import core.Main;
 
 /**
@@ -21,6 +17,10 @@ public class LexicalAnalysis {
 	
 	public LexicalAnalysis() {
 		initTables();
+	}
+	
+	public void clearConstantTable() {
+		constantTable.clear();
 	}
 	
 	public String convert (String input) {
